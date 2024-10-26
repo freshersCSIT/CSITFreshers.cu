@@ -164,8 +164,8 @@
 <body>
 
     <div class="container">
-        <h1>CODE ODYSSEY</h1>
-        <div class="form-group">
+        <h1>CODERS ODYSSEY</h1
+            <div class="form-group">
             <label for="name">Enter Your Name:</label>
             <input type="text" id="name" placeholder="Type your name here...">
         </div>
@@ -173,7 +173,7 @@
         <button id="downloadButton" style="display: none;" onclick="downloadFiles()">Download Invitation </button>
 
         <div class="invitation-card" id="invitationCard">
-            <h2>Welcome to Code Odyssey, <span id="userName"></span></h2>
+            <h2>Welcome to Coders Odyssey, <span id="userName"></span></h2>
             <p>Organized by the <span class="highlight">Department of Computer Science and Information Technology</span></p>
             <p><strong>Date:</strong> 29th October 2024</p>
             <p><strong>Venue:</strong> 206 Room, Department of CSIT</p>
@@ -214,14 +214,14 @@
 
             doc.setFont("courier", "normal");
             doc.setFontSize(16);
-            doc.text(`Welcome to Code Odyssey, ${name}!`, 20, 30);
+            doc.text(`Welcome to Coders Odyssey, ${name}!`, 20, 30);
             doc.text("Organized by the Department of Computer Science and", 20, 40);
             doc.text("Information Technology", 20, 50);
             doc.text("Date: 29th October 2024", 20, 60);
             doc.text("Venue: 206 Room, Department of CSIT", 20, 70);
             doc.text(`printf("See you at the Event, ${name}!");`, 20, 90);
 
-            doc.save(`Code_Odyssey_Invitation_${name}.pdf`);
+            doc.save(`Coders_Odyssey_Invitation_${name}.pdf`);
         }
 
         function downloadInPdf() {
