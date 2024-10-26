@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODERS ODYSSEY</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background: linear-gradient(135deg, #6a0dad, #ffffff, #ffd700);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #ffd700;
+            margin-bottom: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            color: #6a0dad;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 18px;
+            color: #6a0dad;
+        }
+
+        input[type="text"] {
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            color: #333;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #b57edc;
+        }
+
+        button {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            background-color: #ffd700;
+            color: #6a0dad;
+            cursor: pointer;
+            border-radius: 8px;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #e6c200;
+        }
+
+        .invitation-card {
+            display: none;
+            background-color: #fdfdfd;
+            color: #6a0dad;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 30px;
+            border: 1px solid #6a0dad;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .invitation-card:hover {
+            background-color: #f1e7fd;
+            transform: scale(1.02);
+        }
+
+        .invitation-card h2 {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+
+        .invitation-card p {
+            font-size: 16px;
+        }
+
+        .invitation-card .highlight {
+            color: #b57edc;
+        }
+
+        .code-snippet {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #e0d0f7;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #6a0dad;
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 12px;
+            color: #555;
+            padding: 5px;
+        }
+
+        footer p {
+            margin-bottom: 5px;
+        }
+
+        footer a {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>CODERS ODYSSEY</h1>
+        <div class="form-group">
+            <label for="name">Enter Your Name:</label>
+            <input type="text" id="name" placeholder="Type your name here...">
+        </div>
+        <button onclick="generateInvitation()">Generate Invitation</button>
+        <button id="downloadButton" style="display: none;" onclick="downloadFiles()">Download Invitation </button>
+
+        <div class="invitation-card" id="invitationCard">
+            <h2>Welcome to Coders Odyssey, <span id="userName"></span></h2>
+            <p>Organized by the <span class="highlight">Department of Computer Science and Information Technology</span></p>
+            <p><strong>Date:</strong> 29th October 2024</p>
+            <p><strong>Venue:</strong> 206 Room, Department of CSIT</p>
+            <div class="code-snippet">
+                <pre><code>printf("See you at the Event, <span id="codeUserName"></span>!");</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with love by <a href="#">Samir</a></p>
+    </footer>
+
+    <!-- Add an audio element -->
+    <audio id="invitationAudio" src="gaan.mp3"></audio> <!-- Update with the correct path to your audio file -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function generateInvitation() {
+            var name = document.getElementById("name").value;
+            if (name.trim() !== "") {
+                document.getElementById("userName").textContent = name;
+                document.getElementById("codeUserName").textContent = name;
+                document.getElementById("invitationCard").style.display = "block";
+                document.getElementById("downloadButton").style.display = "block";
+
+                // Play audio when generating invitation
+                document.getElementById("invitationAudio").play();
+            } else {
+                alert("Please enter your name!");
+            }
+        }
+
+        function downloadFiles() {
+            generatePDF(); // First download the invitation PDF
+            setTimeout(downloadInPdf, 1000); // Delay for the second download to avoid conflicts
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            var name = document.getElementById("userName").textContent;
+
+            doc.setFont("courier", "normal");
+            doc.setFontSize(16);
+            doc.text(`Welcome to Coders Odyssey, ${name}!`, 20, 30);
+            doc.text("Organized by the Department of Computer Science and", 20, 40);
+            doc.text("Information Technology", 20, 50);
+            doc.text("Date: 29th October 2024", 20, 60);
+            doc.text("Venue: 206 Room, Department of CSIT", 20, 70);
+            doc.text(`printf("See you at the Event, ${name}!");`, 20, 90);
+
+            doc.save(`Coders_Odyssey_Invitation_${name}.pdf`);
+        }
+
+        function downloadInPdf() {
+            const link = document.createElement('a');
+            link.href = "invi.pdf"; // Replace with actual path to in.pdf file
+            link.download = 'invi.pdf';
+            link.click();
+        }
+    </script>
+
+</body>
+
+</html>
